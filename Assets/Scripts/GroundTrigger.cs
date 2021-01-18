@@ -6,7 +6,7 @@ public class GroundTrigger : MonoBehaviour
 {
     public bool isGrounded = false;
 
-    void OnTriggerStay2D()
+    void OnTriggerStay2D(Collider2D other)
     {
         isGrounded = true;
     }

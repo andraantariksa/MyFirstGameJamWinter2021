@@ -39,6 +39,9 @@
      <Compile Include="Assets\Scripts\Door.cs" />
      <Compile Include="Assets\Scripts\FloatExtraOp.cs" />
      <Compile Include="Assets\Scripts\GroundTrigger.cs" />
+     <Compile Include="Assets\Scripts\Key.cs" />
+     <Compile Include="Assets\Scripts\Keyhole.cs" />
+     <Compile Include="Assets\Scripts\PickupArea.cs" />
      <Compile Include="Assets\Scripts\PlayerControl.cs" />
      <Compile Include="Assets\Scripts\ShrinkingPlatform.cs" />
     <Reference Include="UnityEngine">

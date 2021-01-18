@@ -14,6 +14,12 @@ public class PlayerControl : MonoBehaviour
 
     public GameObject groundTriggerObject;
     GroundTrigger groundTrigger;
+
+    public GameObject pickupAreaObject;
+    public float throwingForce;
+    PickupArea pickupArea;
+    GameObject pickedItem;
+    bool isCarrying = false;
     
     Rigidbody2D body;
 
@@ -23,6 +29,7 @@ public class PlayerControl : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         groundTrigger = groundTriggerObject.GetComponent<GroundTrigger>();
+        pickupArea = pickupAreaObject.GetComponent<PickupArea>();
         sprite = GetComponent<SpriteRenderer>();
     }
 
@@ -41,11 +48,37 @@ public class PlayerControl : MonoBehaviour
 
         if (moveDirection > 0)
         {
-            sprite.flipX = false;
+            transform.localScale = new Vector2(1, 1);
         }
         else if (moveDirection < 0)
         {
-            sprite.flipX = true;
+            transform.localScale = new Vector2(-1, 1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.M))
+        {
+            if (!isCarrying)
+            {
+                if (pickupArea.PickItem())
+                {
+                    pickedItem = pickupArea.PickItem();
+                    pickedItem.transform.parent = gameObject.transform;
+                    pickedItem.GetComponent<Rigidbody2D>().isKinematic = true;
+                    pickedItem.transform.localPosition = new Vector3(0.0f, 0.25f, 0.0f);
+                    isCarrying = true;
+                }
+            }
+            else 
+            {
+                if (isCarrying)
+                {
+                    isCarrying = false;
+                    pickedItem.transform.parent = null;
+                    pickedItem.GetComponent<Rigidbody2D>().isKinematic = false;
+                    pickedItem.GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.localScale.x * throwingForce, 1), ForceMode2D.Impulse);
+                    pickedItem = null;
+                }
+            }
         }
     }
 
@@ -71,5 +104,10 @@ public class PlayerControl : MonoBehaviour
         }
 
         body.velocity = new Vector2(moveDirection * speed, body.velocity.y);
+    }
+
+    public void ChangeIsCarrying(bool value)
+    {
+        isCarrying = value;
     }
 }
