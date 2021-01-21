@@ -1,6 +1,7 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Door : MonoBehaviour
     bool isLocked = false;
     Color doorColor;
     SpriteRenderer sprite;
+
+    public int levelIndex;
     
     void Start() 
     {
@@ -30,7 +33,7 @@ public class Door : MonoBehaviour
     {
         if (!isLocked)
         {
-            Time.timeScale = 0f;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); 
         } 
     }
 
