@@ -8,6 +8,7 @@ public class Key : MonoBehaviour
     {
         if (transform.parent != null)
         {
+            //If the key destroyed when player carry it, change the isCarrying of player to false.
             transform.parent.gameObject.GetComponent<PlayerControl>().ChangeIsCarrying(false);
         }    
     }

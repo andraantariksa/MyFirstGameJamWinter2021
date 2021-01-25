@@ -10,6 +10,7 @@ public class PlayerControl : MonoBehaviour
     public float jumpVelocity;
     public float cayoteJumpDuration;
     bool jumpPressed = false;
+    bool isJump = false;
     float jumpTimer = 0.0f;
 
     public GameObject groundTriggerObject;
@@ -25,16 +26,23 @@ public class PlayerControl : MonoBehaviour
 
     SpriteRenderer sprite;
 
+    AudioSource audioPlayer;
+    public AudioClip jumpSound;
+    public AudioClip pickupSound;
+    public AudioClip throwSound;
+
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         groundTrigger = groundTriggerObject.GetComponent<GroundTrigger>();
         pickupArea = pickupAreaObject.GetComponent<PickupArea>();
         sprite = GetComponent<SpriteRenderer>();
+        audioPlayer = GetComponent<AudioSource>();
     }
 
     void Update()
     {
+        //Detect if jump button pressed
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
             jumpPressed = true;
@@ -46,6 +54,7 @@ public class PlayerControl : MonoBehaviour
 
         moveDirection = Input.GetAxis("Horizontal");
 
+        //Facing direction
         if (moveDirection > 0)
         {
             transform.localScale = new Vector2(1, 1);
@@ -57,33 +66,29 @@ public class PlayerControl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.M))
         {
-            if (!isCarrying)
+            //Throw item if carrying item
+            if (isCarrying)
             {
-                if (pickupArea.PickItem())
-                {
-                    pickedItem = pickupArea.PickItem();
-                    pickedItem.transform.parent = gameObject.transform;
-                    pickedItem.GetComponent<Rigidbody2D>().isKinematic = true;
-                    pickedItem.transform.localPosition = new Vector3(0.0f, 0.25f, 0.0f);
-                    isCarrying = true;
-                }
-            }
-            else 
-            {
-                if (isCarrying)
-                {
-                    isCarrying = false;
-                    pickedItem.transform.parent = null;
-                    pickedItem.GetComponent<Rigidbody2D>().isKinematic = false;
-                    pickedItem.GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.localScale.x * throwingForce, 1), ForceMode2D.Impulse);
-                    pickedItem = null;
-                }
+                PlayAudio(throwSound);
+                isCarrying = false;
+                pickedItem.transform.parent = null;
+                pickedItem.GetComponent<Rigidbody2D>().isKinematic = false;
+                pickedItem.GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.localScale.x * throwingForce, 1), ForceMode2D.Impulse);
+                pickedItem = null;
             }
         }
     }
 
     void FixedUpdate() 
     {
+        //Cayote Jump
+
+        /*
+            Check if the player is on the groud. 
+            If yes, keep reseting the timer to the cayoteJumpDuration.
+            If not, keep decreasing the time until it reach zero.
+            When it reach zero, player can't jump.    
+        */
         if (groundTrigger.isGrounded)
         {
             jumpTimer = cayoteJumpDuration;
@@ -94,12 +99,26 @@ public class PlayerControl : MonoBehaviour
             {
                 jumpTimer -= Time.fixedDeltaTime;
             }
+            else
+            {
+                isJump = false;
+            }
         }
+
+        /*
+            Check if the jump button pressed.
+            Then check if player can jump
+        */
         if (jumpPressed)
         {
             if (jumpTimer > 0)
             {
                 body.velocity = new Vector2(body.velocity.x, jumpVelocity);
+                if (!isJump)
+                {
+                    PlayAudio(jumpSound);
+                    isJump = true;
+                }
             }
         }
 
@@ -109,5 +128,24 @@ public class PlayerControl : MonoBehaviour
     public void ChangeIsCarrying(bool value)
     {
         isCarrying = value;
+    }
+
+    public void PlayAudio(AudioClip clip)
+    {
+        audioPlayer.PlayOneShot(clip);
+    }
+
+    //Fucntion to pick up item. Used on the PickupArea
+    public void Pickup(GameObject item)
+    {
+        if (!isCarrying)
+        {
+            PlayAudio(pickupSound);
+            pickedItem = item;
+            pickedItem.transform.parent = gameObject.transform;
+            pickedItem.GetComponent<Rigidbody2D>().isKinematic = true;
+            pickedItem.transform.localPosition = new Vector3(0.0f, 0.25f, 0.0f);
+            isCarrying = true;
+        }
     }
 }

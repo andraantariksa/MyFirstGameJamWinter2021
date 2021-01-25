@@ -37,16 +37,19 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Door.cs" />
+     <Compile Include="Assets\Scripts\EndManager.cs" />
      <Compile Include="Assets\Scripts\FloatExtraOp.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GroundTrigger.cs" />
+     <Compile Include="Assets\Scripts\InGameMainCamera.cs" />
+     <Compile Include="Assets\Scripts\InGameUI.cs" />
      <Compile Include="Assets\Scripts\Key.cs" />
      <Compile Include="Assets\Scripts\Keyhole.cs" />
      <Compile Include="Assets\Scripts\MenuManager.cs" />
-     <Compile Include="Assets\Scripts\PauseLayer.cs" />
      <Compile Include="Assets\Scripts\PickupArea.cs" />
+     <Compile Include="Assets\Scripts\Platform.cs" />
      <Compile Include="Assets\Scripts\PlayerControl.cs" />
-     <Compile Include="Assets\Scripts\ShrinkingPlatform.cs" />
+     <Compile Include="Assets\Scripts\Timer.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

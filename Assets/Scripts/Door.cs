@@ -12,11 +12,17 @@ public class Door : MonoBehaviour
     SpriteRenderer sprite;
 
     public int levelIndex;
+
+    AudioSource audioPlayer;
+    public AudioClip unlockedSound;
     
     void Start() 
     {
         sprite = GetComponent<SpriteRenderer>();
         keyholeTransform = gameObject.transform.Find("Keyhole");
+        audioPlayer = GetComponent<AudioSource>();
+
+        //Check if the Door is locked or not
         if (keyholeTransform == null)
         {
             isLocked = false;
@@ -33,6 +39,7 @@ public class Door : MonoBehaviour
     {
         if (!isLocked)
         {
+            //Move to next scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); 
         } 
     }
@@ -54,6 +61,12 @@ public class Door : MonoBehaviour
     public void Unlocked()
     {
         isLocked = false;
+        PlayAudio(unlockedSound);
         UpdateDoorColor();
+    }
+
+    public void PlayAudio(AudioClip clip)
+    {
+        audioPlayer.PlayOneShot(clip);
     }
 }
