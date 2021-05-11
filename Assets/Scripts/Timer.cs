@@ -7,14 +7,14 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    public static Timer instance;
-    public Text timerText;
+    Text timerText;
     TimeSpan timePlaying;
     bool isTimerOn;
-    float timePassed;
+    public static float timePassed;
 
     void Start() 
     {
+        timerText = GetComponent<Text>();
         // timerText.text = "00:00.00";
         isTimerOn = false;
         BeginTimer();
@@ -24,14 +24,13 @@ public class Timer : MonoBehaviour
     {
         print("YES");
         isTimerOn = true;
-        timePassed = 0.0f;
-
         StartCoroutine(UpdateTimer());
     }
 
     public void EndTimer() 
     {
         isTimerOn = false;
+        timePassed = 0.0f;
     }
 
     //Update the timer 
@@ -42,7 +41,10 @@ public class Timer : MonoBehaviour
             timePassed += Time.deltaTime;
             timePlaying = TimeSpan.FromSeconds(timePassed);
             string timePlayingStr = timePlaying.ToString("mm':'ss'.'ff");
-            timerText.text = timePlayingStr;
+            if (timerText != null)
+            {
+                timerText.text = timePlayingStr;
+            }
 
             yield return null;
         }

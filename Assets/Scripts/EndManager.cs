@@ -1,22 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 public class EndManager : MonoBehaviour
 {
     public Text endTime;
+    Timer timer;
     
     void Start()
     {
-        //Copy the total time passed to the EndScene timer label
-        //Tben destroy the InGameUi, which contain the timer, when player reach the end screen
-        GameObject inGameUI = GameObject.Find("InGameUI");
-        Text timerText = inGameUI.transform.Find("Timer").Find("TimerText").gameObject.GetComponent<Text>();
+        timer = GetComponent<Timer>();
+        TimeSpan timePlaying = TimeSpan.FromSeconds(Timer.timePassed);
+        timer.EndTimer();
 
-        endTime.text = timerText.text;
-
-        Destroy(inGameUI);
+        string timePlayingStr = timePlaying.ToString("mm':'ss'.'ff");
+        
+        endTime.text = timePlayingStr;
     }
 
     public void PlayAgain()

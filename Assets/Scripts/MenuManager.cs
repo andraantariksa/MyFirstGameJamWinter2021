@@ -7,6 +7,7 @@ public class MenuManager : MonoBehaviour
 {
     public void StartGame()
     {
+        Destroy(GameObject.Find("Main Camera"));
         SceneManager.LoadScene(1);
     }
 

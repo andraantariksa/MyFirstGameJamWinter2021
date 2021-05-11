@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadLevel: {fileID: 8300000, guid: 672cbf1876c4fec45a6d9c9e0bdf2950, type: 3}
+  inGameUI: {fileID: 0}
 --- !u!82 &720929577090877777
 AudioSource:
   m_ObjectHideFlags: 0

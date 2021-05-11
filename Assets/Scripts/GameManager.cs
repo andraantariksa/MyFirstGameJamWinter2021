@@ -7,9 +7,11 @@ public class GameManager : MonoBehaviour
 {
     AudioSource audioPlayer;
     public AudioClip loadLevel;
+    InGameUI inGameUI;
 
     void Start() 
     {
+        inGameUI = GameObject.Find("InGameUI").GetComponent<InGameUI>();
         audioPlayer = GetComponent<AudioSource>();
         PlayAudio(loadLevel);
     }
@@ -19,7 +21,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             //Reload the scene
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            RestartScene();
         }
     }
 
@@ -28,4 +30,9 @@ public class GameManager : MonoBehaviour
         audioPlayer.PlayOneShot(clip);
     }
 
+    public void RestartScene()
+    {
+        inGameUI.DestroyNecessaryGameObject();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }

@@ -43,7 +43,7 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         //Detect if jump button pressed
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W) || InputManager.jump)
         {
             jumpPressed = true;
         }
@@ -52,7 +52,7 @@ public class PlayerControl : MonoBehaviour
             jumpPressed = false;
         }
 
-        moveDirection = Input.GetAxis("Horizontal");
+        moveDirection = Input.GetAxis("Horizontal") + InputManager.horizontal;
 
         //Facing direction
         if (moveDirection > 0)
@@ -64,7 +64,7 @@ public class PlayerControl : MonoBehaviour
             transform.localScale = new Vector2(-1, 1);
         }
 
-        if (Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.M) || InputManager.throwKey)
         {
             //Throw item if carrying item
             if (isCarrying)
